@@ -1,3 +1,4 @@
+import 'package:blocstoreapp/model/article_model.dart';
 import 'package:blocstoreapp/screens/show_details/show_details.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
@@ -8,26 +9,14 @@ class PostCard extends StatelessWidget {
   final double width;
   final double padding;
 
-  final String author;
-  final String title;
-  final String description;
-  final String url;
-  final String urlToImage;
-  final String publishedAt;
-  final String content;
+  final Article article;
 
   const PostCard(
       {Key? key,
       required this.heigth,
       required this.width,
       required this.padding,
-      required this.title,
-      required this.description,
-      required this.author,
-      required this.url,
-      required this.urlToImage,
-      required this.publishedAt,
-      required this.content})
+      required this.article})
       : super(key: key);
 
   @override
@@ -41,13 +30,7 @@ class PostCard extends StatelessWidget {
               heigth: heigth * 0.55,
               width: width,
               padding: width * 0.03,
-              title: title,
-              description: description,
-              author: author,
-              content: content,
-              publishedAt: publishedAt,
-              url: url,
-              urlToImage: urlToImage,
+              article: article,
             ),
           ),
         );
@@ -66,7 +49,7 @@ class PostCard extends StatelessWidget {
             SizedBox(
               height: heigth * 0.15,
               child: Text(
-                title,
+                article.title,
                 maxLines: 2,
                 style: TextStyle(
                     overflow: TextOverflow.ellipsis,
@@ -77,9 +60,9 @@ class PostCard extends StatelessWidget {
             SizedBox(
               height: heigth * 0.15,
               child: Text(
-                description,
+                article.description,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 3,
+                maxLines: 2,
                 style: const TextStyle(fontWeight: FontWeight.w300),
               ),
             ),
@@ -100,7 +83,7 @@ class PostCard extends StatelessWidget {
                   );
                 },
                 image: Image.network(
-                  urlToImage,
+                  article.urlToImage,
                   fit: BoxFit.scaleDown,
                 ).image,
               ),
@@ -108,10 +91,9 @@ class PostCard extends StatelessWidget {
             SizedBox(
               child: Text(
                 DateFormat("yyyy-MM-dd'T'HH:mm:ss")
-                    .parse(publishedAt)
+                    .parse(article.publishedAt)
                     .toLocal()
                     .toString(),
-                // DateTime.parse(publishedAt).toString(),
                 style: const TextStyle(fontWeight: FontWeight.w300),
               ),
             ),

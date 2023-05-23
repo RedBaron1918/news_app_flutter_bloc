@@ -1,33 +1,21 @@
+import 'package:blocstoreapp/model/article_model.dart';
 import 'package:blocstoreapp/screens/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ShowDetailPage extends StatefulWidget {
+  final Article article;
   final double heigth;
   final double width;
   final double padding;
 
-  final String author;
-  final String title;
-  final String description;
-  final String url;
-  final String urlToImage;
-  final String publishedAt;
-  final String content;
-
   const ShowDetailPage(
       {Key? key,
+      required this.article,
       required this.heigth,
       required this.width,
-      required this.padding,
-      required this.author,
-      required this.title,
-      required this.description,
-      required this.url,
-      required this.urlToImage,
-      required this.publishedAt,
-      required this.content})
+      required this.padding})
       : super(key: key);
 
   @override
@@ -43,12 +31,13 @@ class ShowtDetailStatePage extends State<ShowDetailPage> {
             Padding(
               padding: EdgeInsets.only(right: widget.width * 0.04),
               child: GestureDetector(
-                onTap: () => Share.share(widget.url, subject: widget.title),
+                onTap: () => Share.share(widget.article.url,
+                    subject: widget.article.title),
                 child: const Icon(Icons.share),
               ),
             )
           ],
-          title: SizedBox(child: Text(widget.title)),
+          title: SizedBox(child: Text(widget.article.title)),
         ),
         body: SafeArea(
           child: ListView(
@@ -72,7 +61,7 @@ class ShowtDetailStatePage extends State<ShowDetailPage> {
                       );
                     },
                     image: Image.network(
-                      widget.urlToImage,
+                      widget.article.urlToImage,
                     ).image,
                   ),
                 ],
@@ -83,7 +72,7 @@ class ShowtDetailStatePage extends State<ShowDetailPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.title,
+                      widget.article.title,
                       maxLines: 5,
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -95,7 +84,7 @@ class ShowtDetailStatePage extends State<ShowDetailPage> {
                       color: black,
                     ),
                     Text(
-                      widget.description,
+                      widget.article.description,
                       maxLines: 50,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
@@ -106,7 +95,7 @@ class ShowtDetailStatePage extends State<ShowDetailPage> {
                       color: black,
                     ),
                     Text(
-                      widget.content,
+                      widget.article.content,
                       maxLines: 50,
                       style: TextStyle(
                         fontSize: widget.width * 0.040,
@@ -117,7 +106,7 @@ class ShowtDetailStatePage extends State<ShowDetailPage> {
                       color: black,
                     ),
                     Text(
-                      widget.publishedAt,
+                      widget.article.publishedAt,
                       style: const TextStyle(fontWeight: FontWeight.w300),
                     ),
                   ],
@@ -126,7 +115,7 @@ class ShowtDetailStatePage extends State<ShowDetailPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: widget.width * 0.3),
                 child: ElevatedButton(
-                  onPressed: () => _launchURL(widget.url),
+                  onPressed: () => _launchURL(widget.article.url),
                   child: const Text('Go To The Source'),
                 ),
               ),

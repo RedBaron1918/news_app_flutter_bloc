@@ -17,18 +17,7 @@ class ListArticles extends StatefulWidget {
 class _ListArticlesState extends State<ListArticles> {
   String currentHeading = "Top Headlines";
   int selectedButtonID = 0;
-
   String selectedCategory = "topheadlines";
-  List<bool> buttonStatus = [
-    true,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false
-  ];
 
   final NewsRepository repository = NewsRepository();
   String selectedCountryEmoji = "us";
@@ -37,6 +26,31 @@ class _ListArticlesState extends State<ListArticles> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    List<String> categories = [
+      "topheadlines",
+      "business",
+      "entertainment",
+      "general",
+      "health",
+      "science",
+      "sports",
+      "technology"
+    ];
+    List<Widget> buttonList = List.generate(
+      categories.length,
+      (index) => CategoryButton(
+        category: categories[index],
+        country: selectedCountryCode,
+        buttonID: index,
+        isSelected: index == selectedButtonID,
+        onClicked: (category, id) {
+          selectedCategory = category;
+          selectedButtonID = id;
+          setState(() {});
+        },
+      ),
+    );
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -91,104 +105,7 @@ class _ListArticlesState extends State<ListArticles> {
                 right: width * 0.015,
               ),
               scrollDirection: Axis.horizontal,
-              children: [
-                CategoryButton(
-                  category: "topheadlines",
-                  country: selectedCountryCode,
-                  buttonID: 0,
-                  isSelected: buttonStatus[0],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-                CategoryButton(
-                  category: "business",
-                  country: selectedCountryCode,
-                  buttonID: 1,
-                  isSelected: buttonStatus[1],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-                CategoryButton(
-                  category: "entertainment",
-                  country: selectedCountryCode,
-                  buttonID: 2,
-                  isSelected: buttonStatus[2],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-                CategoryButton(
-                  category: "general",
-                  country: selectedCountryCode,
-                  buttonID: 3,
-                  isSelected: buttonStatus[3],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-                CategoryButton(
-                  category: "health",
-                  country: selectedCountryCode,
-                  buttonID: 4,
-                  isSelected: buttonStatus[4],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-                CategoryButton(
-                  category: "science",
-                  country: selectedCountryCode,
-                  buttonID: 5,
-                  isSelected: buttonStatus[5],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-                CategoryButton(
-                  category: "sports",
-                  country: selectedCountryCode,
-                  buttonID: 6,
-                  isSelected: buttonStatus[6],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-                CategoryButton(
-                  category: "technology",
-                  country: selectedCountryCode,
-                  buttonID: 7,
-                  isSelected: buttonStatus[7],
-                  onClicked: (category, id) {
-                    selectedCategory = category;
-                    selectedButtonID = id;
-                    putOffOtherButtons(buttonStatus);
-                    setState(() {});
-                  },
-                ),
-              ],
+              children: [...buttonList],
             ),
           ),
           Expanded(
@@ -262,13 +179,7 @@ class _ListArticlesState extends State<ListArticles> {
                   heigth: heigth * 0.451,
                   width: width,
                   padding: width * 0.03,
-                  title: articles[index].title,
-                  description: articles[index].description,
-                  author: articles[index].author,
-                  content: articles[index].content,
-                  publishedAt: articles[index].publishedAt,
-                  url: articles[index].url,
-                  urlToImage: articles[index].urlToImage,
+                  article: articles[index],
                 );
               })),
         ),
