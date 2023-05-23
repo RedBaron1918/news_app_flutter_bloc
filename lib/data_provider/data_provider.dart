@@ -9,12 +9,9 @@ class DataProvider {
   final unencodedPath = "/v2/top-headlines";
   final client = http.Client();
 
-  Future<List<Article>> getArticles(String categoryName, String country) async {
-    final queryParameters = {'country': country};
-
-    if (categoryName[1] != 'o') {
-      queryParameters['category'] = categoryName;
-    }
+  Future<List<Article>> getArticles(
+      String? categoryName, String country) async {
+    final queryParameters = {'country': country, "category": categoryName};
 
     queryParameters['apiKey'] = ApiConstants.apiKey;
 

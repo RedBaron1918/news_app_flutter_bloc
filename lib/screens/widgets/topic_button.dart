@@ -7,7 +7,6 @@ class TagButton extends StatefulWidget {
   late double heigth;
   late double width;
   late String topic;
-
   late Color backgroundColor = transparent;
   late Color textColor = tagBackgroundColor;
 

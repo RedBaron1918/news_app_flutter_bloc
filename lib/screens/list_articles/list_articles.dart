@@ -17,17 +17,20 @@ class ListArticles extends StatefulWidget {
 class _ListArticlesState extends State<ListArticles> {
   String currentHeading = "Top Headlines";
   int selectedButtonID = 0;
-  String selectedCategory = "topheadlines";
+  String selectedCategory = "business";
 
   final NewsRepository repository = NewsRepository();
   String selectedCountryEmoji = "us";
   String selectedCountryCode = "gb";
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     List<String> categories = [
-      "topheadlines",
       "business",
       "entertainment",
       "general",
@@ -115,7 +118,7 @@ class _ListArticlesState extends State<ListArticles> {
                 if (state is NewsInitialState) {
                   context
                       .read<NewsBloc>()
-                      .add(GetArticlesEvent(categoryName: 'topheadlines'));
+                      .add(GetArticlesEvent(countryName: 'us'));
                 } else if (state is NewsLoadingState) {
                   return Center(
                     child: CircularProgressIndicator(
@@ -194,11 +197,7 @@ class _ListArticlesState extends State<ListArticles> {
       }
     }
     buttonStatus[selectedButtonID] = true;
-    if (selectedCategory[1] == 'o') {
-      currentHeading = 'Top Headlines';
-    } else {
-      selectedCategory = currentHeading =
-          selectedCategory[0].toUpperCase() + selectedCategory.substring(1);
-    }
+    selectedCategory = currentHeading =
+        selectedCategory[0].toUpperCase() + selectedCategory.substring(1);
   }
 }
