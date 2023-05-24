@@ -1,5 +1,5 @@
-import 'package:blocstoreapp/model/article_model.dart';
-import 'package:blocstoreapp/screens/show_details/show_details.dart';
+import 'package:blocstoreapp/article/model/article_model.dart';
+import 'package:blocstoreapp/article/screens/show_details/show_details.dart';
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +8,6 @@ class PostCard extends StatelessWidget {
   final double heigth;
   final double width;
   final double padding;
-
   final Article article;
 
   const PostCard(
@@ -62,12 +61,12 @@ class PostCard extends StatelessWidget {
               child: Text(
                 article.description,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+                maxLines: 3,
                 style: const TextStyle(fontWeight: FontWeight.w300),
               ),
             ),
             SizedBox(
-              height: heigth * 0.55,
+              height: heigth * 0.51,
               child: FadeInImage(
                 placeholder: Image.asset(
                         alignment: Alignment.center,

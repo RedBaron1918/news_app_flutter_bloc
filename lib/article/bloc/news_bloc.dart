@@ -1,8 +1,10 @@
-import 'package:blocstoreapp/model/article_model.dart';
-import 'package:blocstoreapp/repository/news_repository.dart';
+import 'package:blocstoreapp/article/model/article_model.dart';
+import 'package:blocstoreapp/article/repository/news_repository.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/news_event.dart';
-import '../bloc/news_state.dart';
+
+part 'news_event.dart';
+part 'news_state.dart';
 
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
   NewsBloc() : super(NewsInitialState()) {

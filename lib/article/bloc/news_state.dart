@@ -1,5 +1,4 @@
-import 'package:blocstoreapp/model/article_model.dart';
-import 'package:equatable/equatable.dart';
+part of "news_bloc.dart";
 
 class NewsState extends Equatable {
   @override

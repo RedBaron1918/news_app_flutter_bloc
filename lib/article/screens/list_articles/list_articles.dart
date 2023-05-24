@@ -71,7 +71,7 @@ class _ListArticlesState extends State<ListArticles> {
               const PopupMenuItem<int>(
                 value: 0,
                 child: Text(
-                  "England",
+                  "Great Britain",
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -84,7 +84,7 @@ class _ListArticlesState extends State<ListArticles> {
               ),
             ],
             onSelected: (item) {
-              selectedCountryEmoji = (item == 0) ? "us" : "uk";
+              selectedCountryEmoji = (item == 0) ? "us" : "gb";
               selectedCountryCode = (item == 0) ? "gb" : "us";
               setState(() {});
               BlocProvider.of<NewsBloc>(context).add(
@@ -134,7 +134,9 @@ class _ListArticlesState extends State<ListArticles> {
                               countryName: selectedCountryCode),
                         );
                       },
-                      child: buildArticles(context, state.articles));
+                      child: _BuildArticles(
+                        articles: state.articles,
+                      ));
                 } else if (state is NewsErrorState) {
                   return RefreshIndicator(
                     onRefresh: () async {
@@ -163,8 +165,14 @@ class _ListArticlesState extends State<ListArticles> {
       ),
     );
   }
+}
 
-  Widget buildArticles(BuildContext context, List<Article>? articles) {
+class _BuildArticles extends StatelessWidget {
+  final List<Article> articles;
+  const _BuildArticles({required this.articles});
+
+  @override
+  Widget build(BuildContext context) {
     double heigth = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Column(
@@ -176,10 +184,10 @@ class _ListArticlesState extends State<ListArticles> {
           child: ListView.builder(
               padding: EdgeInsets.only(
                   left: width * 0.025, right: width * 0.025, top: width * 0.01),
-              itemCount: articles!.length,
+              itemCount: articles.length,
               itemBuilder: ((context, index) {
                 return PostCard(
-                  heigth: heigth * 0.451,
+                  heigth: heigth * 0.56,
                   width: width,
                   padding: width * 0.03,
                   article: articles[index],
@@ -188,16 +196,5 @@ class _ListArticlesState extends State<ListArticles> {
         ),
       ],
     );
-  }
-
-  void putOffOtherButtons(List<bool> buttonStatus) {
-    for (int i = 0; i < buttonStatus.length; i++) {
-      if (i != selectedButtonID) {
-        buttonStatus[i] = false;
-      }
-    }
-    buttonStatus[selectedButtonID] = true;
-    selectedCategory = currentHeading =
-        selectedCategory[0].toUpperCase() + selectedCategory.substring(1);
   }
 }

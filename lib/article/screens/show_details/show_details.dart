@@ -1,5 +1,5 @@
-import 'package:blocstoreapp/model/article_model.dart';
-import 'package:blocstoreapp/screens/constants/colors.dart';
+import 'package:blocstoreapp/article/model/article_model.dart';
+import 'package:blocstoreapp/article/screens/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';

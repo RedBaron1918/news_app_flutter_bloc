@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+part of "news_bloc.dart";
 
 class NewsEvent extends Equatable {
   @override

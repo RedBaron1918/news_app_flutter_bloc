@@ -4,18 +4,18 @@ import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 
 class TagButton extends StatefulWidget {
-  late double heigth;
-  late double width;
-  late String topic;
+  final double heigth;
+  final double width;
+  final String topic;
   late Color backgroundColor = transparent;
   late Color textColor = tagBackgroundColor;
 
-  TagButton(
-      {Key? key,
-      required this.heigth,
-      required this.width,
-      required this.topic})
-      : super(key: key);
+  TagButton({
+    required this.heigth,
+    required this.width,
+    required this.topic,
+    super.key,
+  });
 
   @override
   State<TagButton> createState() => _TagButtonState();

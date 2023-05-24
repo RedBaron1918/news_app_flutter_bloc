@@ -11,9 +11,11 @@ class DataProvider {
 
   Future<List<Article>> getArticles(
       String? categoryName, String country) async {
-    final queryParameters = {'country': country, "category": categoryName};
-
-    queryParameters['apiKey'] = ApiConstants.apiKey;
+    final queryParameters = {
+      'country': country,
+      "category": categoryName,
+      "apiKey": ApiConstants.apiKey
+    };
 
     try {
       final uri = Uri.https(endPointUrl, unencodedPath, queryParameters);
