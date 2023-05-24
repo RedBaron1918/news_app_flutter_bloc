@@ -7,16 +7,18 @@ part 'news_event.dart';
 part 'news_state.dart';
 
 class NewsBloc extends Bloc<NewsEvent, NewsState> {
-  NewsBloc() : super(NewsInitialState()) {
+  final NewsRepository _newsRepository;
+  NewsBloc({required newsRepository})
+      : _newsRepository = newsRepository,
+        super(NewsInitialState()) {
     on<NewsEvent>((event, emit) async {
       if (event is GetArticlesEvent) {
         emit(NewsLoadingState());
         try {
-          String categoryName = event.categoryName;
-          String countryName = event.countryName;
-          final NewsRepository newsRepository = NewsRepository();
-          List<Article> articles =
-              await newsRepository.getArticles(categoryName, countryName);
+          final String categoryName = event.categoryName;
+          final String countryName = event.countryName;
+          final List<Article> articles =
+              await _newsRepository.getArticles(categoryName, countryName);
           emit(NewsSuccessState(articles));
         } catch (e) {
           emit(NewsErrorState());

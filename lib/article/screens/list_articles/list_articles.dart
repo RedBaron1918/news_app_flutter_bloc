@@ -5,7 +5,6 @@ import '../constants/colors.dart';
 import 'category_button.dart';
 import '../widgets/post_card.dart';
 import '../../model/article_model.dart';
-import '../../repository/news_repository.dart';
 
 class ListArticles extends StatefulWidget {
   const ListArticles({Key? key}) : super(key: key);
@@ -15,11 +14,8 @@ class ListArticles extends StatefulWidget {
 }
 
 class _ListArticlesState extends State<ListArticles> {
-  String currentHeading = "Top Headlines";
   int selectedButtonID = 0;
   String selectedCategory = "business";
-
-  final NewsRepository repository = NewsRepository();
   String selectedCountryEmoji = "us";
   String selectedCountryCode = "gb";
   @override
@@ -57,7 +53,7 @@ class _ListArticlesState extends State<ListArticles> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(currentHeading),
+        title: const Text("Top Headlines"),
         actions: [
           PopupMenuButton(
             shape: RoundedRectangleBorder(

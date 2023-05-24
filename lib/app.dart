@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class App extends MaterialApp {
   App({super.key})
       : super(
-            title: "News App",
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(primarySwatch: Colors.green),
-            home: const ListPage());
+          title: "News App",
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(primarySwatch: Colors.green),
+          home: const ListPage(),
+        );
 }
