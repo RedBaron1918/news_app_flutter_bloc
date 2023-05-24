@@ -1,4 +1,5 @@
 // ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import '../constants/colors.dart';
 
@@ -30,8 +31,9 @@ class _TagButtonState extends State<TagButton> {
         child: OutlinedButton(
           onPressed: _onPressed,
           style: ButtonStyle(
-            side: MaterialStateProperty.all(BorderSide(
-                color: tagBackgroundColor, width: widget.width * 0.01)),
+            side: MaterialStateProperty.all(
+              BorderSide(color: tagBackgroundColor, width: widget.width * 0.01),
+            ),
             backgroundColor: MaterialStateProperty.all(widget.backgroundColor),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(

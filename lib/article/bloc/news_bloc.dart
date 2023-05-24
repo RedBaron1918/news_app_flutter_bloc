@@ -21,8 +21,7 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
               await _newsRepository.getArticles(categoryName, countryName);
           emit(NewsSuccessState(articles));
         } catch (e) {
-          emit(NewsErrorState());
-          throw ("Couldn't fetch data! BLOC Error!");
+          emit(NewsErrorState(e.toString()));
         }
       }
     });

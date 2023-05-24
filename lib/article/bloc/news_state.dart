@@ -9,7 +9,10 @@ class NewsInitialState extends NewsState {}
 
 class NewsLoadingState extends NewsState {}
 
-class NewsErrorState extends NewsState {}
+class NewsErrorState extends NewsState {
+  final String error;
+  NewsErrorState(this.error);
+}
 
 class NewsSuccessState extends NewsState {
   final List<Article> articles;

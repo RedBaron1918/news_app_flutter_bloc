@@ -5,8 +5,6 @@ import '../constants/api_constants.dart';
 import '../model/article_model.dart';
 
 class DataProvider {
-  final endPointUrl = "newsapi.org";
-  final unencodedPath = "/v2/top-headlines";
   final client = http.Client();
 
   Future<List<Article>> getArticles(
@@ -18,12 +16,14 @@ class DataProvider {
     };
 
     try {
-      final uri = Uri.https(endPointUrl, unencodedPath, queryParameters);
+      final uri = Uri.https(
+        ApiConstants.endPointUrl,
+        ApiConstants.unencodedPath,
+        queryParameters,
+      );
       final response = await client.get(uri);
-
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       final body = json['articles'] as List<dynamic>;
-
       final articles = body.map((item) => Article.fromJson(item)).toList();
 
       return articles;

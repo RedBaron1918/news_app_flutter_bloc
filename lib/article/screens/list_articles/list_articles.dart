@@ -85,8 +85,9 @@ class _ListArticlesState extends State<ListArticles> {
               setState(() {});
               BlocProvider.of<NewsBloc>(context).add(
                 GetArticlesEvent(
-                    categoryName: selectedCategory,
-                    countryName: selectedCountryCode),
+                  categoryName: selectedCategory,
+                  countryName: selectedCountryCode,
+                ),
               );
             },
           ),
@@ -142,13 +143,13 @@ class _ListArticlesState extends State<ListArticles> {
                             countryName: selectedCountryCode),
                       );
                     },
-                    child: const Center(
+                    child: Center(
                         child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error_outline),
-                        Text("Connection Error!"),
+                        const Icon(Icons.error_outline),
+                        Text(state.error),
                       ],
                     )),
                   );
