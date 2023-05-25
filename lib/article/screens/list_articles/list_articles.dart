@@ -19,7 +19,7 @@ class _ListArticlesState extends State<ListArticles> {
   int selectedButtonID = 0;
   String selectedCategory = "business";
   String selectedCountryEmoji = "us";
-  String selectedCountryCode = "gb";
+  String selectedCountryCode = "us";
   final _scrollController = ScrollController();
   int _page = 1;
   final int _pageSize = 10;
@@ -29,8 +29,8 @@ class _ListArticlesState extends State<ListArticles> {
     super.initState();
     _scrollController.addListener(_onScroll);
     context.read<NewsBloc>().add(GetArticlesEvent(
-        categoryName: 'business',
-        countryName: 'us',
+        categoryName: selectedCategory,
+        countryName: selectedCountryCode,
         page: _page,
         pageSize: _pageSize));
   }
@@ -183,8 +183,8 @@ class _ListArticlesState extends State<ListArticles> {
     if (_isBottom) {
       _page++;
       context.read<NewsBloc>().add(GetArticlesEvent(
-          categoryName: 'business',
-          countryName: 'us',
+          categoryName: selectedCategory,
+          countryName: selectedCountryCode,
           page: _page,
           pageSize: _pageSize));
     }
