@@ -1,10 +1,12 @@
+import 'package:blocstoreapp/article/constants/categories.dart';
+import 'package:blocstoreapp/article/model/article_model.dart';
+import 'package:blocstoreapp/article/screens/widgets/bottom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/bloc.dart';
 import '../constants/colors.dart';
 import 'category_button.dart';
 import '../widgets/post_card.dart';
-import '../../model/article_model.dart';
 
 class ListArticles extends StatefulWidget {
   const ListArticles({Key? key}) : super(key: key);
@@ -18,23 +20,25 @@ class _ListArticlesState extends State<ListArticles> {
   String selectedCategory = "business";
   String selectedCountryEmoji = "us";
   String selectedCountryCode = "gb";
+  final _scrollController = ScrollController();
+  int _page = 1;
+  final int _pageSize = 10;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_onScroll);
+    context.read<NewsBloc>().add(GetArticlesEvent(
+        categoryName: 'business',
+        countryName: 'us',
+        page: _page,
+        pageSize: _pageSize));
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    List<String> categories = [
-      "business",
-      "entertainment",
-      "general",
-      "health",
-      "science",
-      "sports",
-      "technology"
-    ];
+
     List<Widget> buttonList = List.generate(
       categories.length,
       (index) => CategoryButton(
@@ -124,17 +128,19 @@ class _ListArticlesState extends State<ListArticles> {
                   );
                 } else if (state.status == Status.success) {
                   return RefreshIndicator(
-                    onRefresh: () async {
-                      BlocProvider.of<NewsBloc>(context).add(
-                        GetArticlesEvent(
-                            categoryName: selectedCategory,
-                            countryName: selectedCountryCode),
-                      );
-                    },
-                    child: _BuildArticles(
-                      articles: state.articles,
-                    ),
-                  );
+                      onRefresh: () async {
+                        BlocProvider.of<NewsBloc>(context).add(
+                          GetArticlesEvent(
+                              categoryName: selectedCategory,
+                              countryName: selectedCountryCode),
+                        );
+                      },
+                      child: _ArticleBuilder(
+                        width: width,
+                        scrollController: _scrollController,
+                        article: state.articles,
+                        hasReachedMax: state.hasReachedMax,
+                      ));
                 } else if (state.status == Status.error) {
                   return RefreshIndicator(
                     onRefresh: () async {
@@ -164,16 +170,48 @@ class _ListArticlesState extends State<ListArticles> {
       ),
     );
   }
-}
-
-class _BuildArticles extends StatelessWidget {
-  final List<Article> articles;
-  const _BuildArticles({required this.articles});
 
   @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_isBottom) {
+      _page++;
+      context.read<NewsBloc>().add(GetArticlesEvent(
+          categoryName: 'business',
+          countryName: 'us',
+          page: _page,
+          pageSize: _pageSize));
+    }
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 1);
+  }
+}
+
+class _ArticleBuilder extends StatelessWidget {
+  const _ArticleBuilder({
+    required this.article,
+    required this.hasReachedMax,
+    required this.width,
+    required ScrollController scrollController,
+  }) : _scrollController = scrollController;
+
+  final double width;
+  final ScrollController _scrollController;
+  final bool hasReachedMax;
+  final List<Article> article;
+  @override
   Widget build(BuildContext context) {
-    double heigth = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,14 +221,17 @@ class _BuildArticles extends StatelessWidget {
           child: ListView.builder(
               padding: EdgeInsets.only(
                   left: width * 0.025, right: width * 0.025, top: width * 0.01),
-              itemCount: articles.length,
+              itemCount: hasReachedMax ? article.length : article.length + 1,
+              controller: _scrollController,
               itemBuilder: ((context, index) {
-                return PostCard(
-                  heigth: heigth * 0.56,
-                  width: width,
-                  padding: width * 0.03,
-                  article: articles[index],
-                );
+                return index >= article.length
+                    ? const BottomLoader()
+                    : PostCard(
+                        heigth: MediaQuery.of(context).size.height * 0.56,
+                        width: width,
+                        padding: width * 0.03,
+                        article: article[index],
+                      );
               })),
         ),
       ],

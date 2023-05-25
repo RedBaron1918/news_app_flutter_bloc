@@ -8,5 +8,11 @@ class NewsEvent extends Equatable {
 class GetArticlesEvent extends NewsEvent {
   final String categoryName;
   final String countryName;
-  GetArticlesEvent({this.categoryName = 'business', this.countryName = 'us'});
+  final int page;
+  final int pageSize;
+  GetArticlesEvent(
+      {this.categoryName = 'business',
+      this.countryName = 'us',
+      this.page = 1,
+      this.pageSize = 5});
 }

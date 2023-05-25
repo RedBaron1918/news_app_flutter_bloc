@@ -12,17 +12,22 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       : _newsRepository = newsRepository,
         super(const NewsState()) {
     on<NewsEvent>((event, emit) async {
+      if (state.hasReachedMax) return;
       if (event is GetArticlesEvent) {
         emit(state.copyWith(status: Status.loading));
         try {
-          final String categoryName = event.categoryName;
-          final String countryName = event.countryName;
-          final List<Article> articles =
-              await _newsRepository.getArticles(categoryName, countryName);
-          emit(state.copyWith(
-            status: Status.success,
-            articles: articles,
-          ));
+          final List<Article> articles = await _newsRepository.getArticles(
+            event.categoryName,
+            event.countryName,
+            event.page,
+            event.pageSize,
+          );
+          emit(articles.isEmpty
+              ? state.copyWith(hasReachedMax: true)
+              : state.copyWith(
+                  status: Status.success,
+                  articles: articles,
+                ));
         } catch (e) {
           emit(state.copyWith(
             status: Status.error,

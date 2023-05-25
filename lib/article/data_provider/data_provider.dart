@@ -8,11 +8,13 @@ class DataProvider {
   final client = http.Client();
 
   Future<List<Article>> getArticles(
-      String? categoryName, String country) async {
+      String? categoryName, String country, int page, int pageSize) async {
     final queryParameters = {
       'country': country,
       "category": categoryName,
-      "apiKey": ApiConstants.apiKey
+      "apiKey": ApiConstants.apiKey,
+      "page": page.toString(),
+      "pageSize": pageSize.toString()
     };
 
     try {
