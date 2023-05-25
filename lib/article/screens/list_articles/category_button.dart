@@ -32,7 +32,8 @@ class _CategoryButtonState extends State<CategoryButton> {
         onPressed: () {
           GetArticlesEvent eventWithCategory = GetArticlesEvent(
               categoryName: widget.category, countryName: widget.country);
-          if (BlocProvider.of<NewsBloc>(context).state is! NewsLoadingState) {
+          if (BlocProvider.of<NewsBloc>(context).state.status !=
+              Status.loading) {
             BlocProvider.of<NewsBloc>(context).add(eventWithCategory);
           }
           widget.onClicked(widget.category, widget.buttonID);

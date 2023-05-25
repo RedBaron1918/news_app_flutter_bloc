@@ -1,20 +1,30 @@
 part of "news_bloc.dart";
 
+enum Status { initial, loading, success, error }
+
 class NewsState extends Equatable {
-  @override
-  List<Object?> get props => throw UnimplementedError();
-}
-
-class NewsInitialState extends NewsState {}
-
-class NewsLoadingState extends NewsState {}
-
-class NewsErrorState extends NewsState {
-  final String error;
-  NewsErrorState(this.error);
-}
-
-class NewsSuccessState extends NewsState {
+  final Status status;
   final List<Article> articles;
-  NewsSuccessState(this.articles);
+  final String error;
+
+  const NewsState({
+    this.status = Status.initial,
+    this.articles = const [],
+    this.error = '',
+  });
+
+  NewsState copyWith({
+    Status? status,
+    List<Article>? articles,
+    String? error,
+  }) {
+    return NewsState(
+      status: status ?? this.status,
+      articles: articles ?? this.articles,
+      error: error ?? this.error,
+    );
+  }
+
+  @override
+  List<Object> get props => [status, articles, error];
 }

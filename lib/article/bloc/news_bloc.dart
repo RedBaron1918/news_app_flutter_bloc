@@ -10,18 +10,24 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
   final NewsRepository _newsRepository;
   NewsBloc({required newsRepository})
       : _newsRepository = newsRepository,
-        super(NewsInitialState()) {
+        super(const NewsState()) {
     on<NewsEvent>((event, emit) async {
       if (event is GetArticlesEvent) {
-        emit(NewsLoadingState());
+        emit(state.copyWith(status: Status.loading));
         try {
           final String categoryName = event.categoryName;
           final String countryName = event.countryName;
           final List<Article> articles =
               await _newsRepository.getArticles(categoryName, countryName);
-          emit(NewsSuccessState(articles));
+          emit(state.copyWith(
+            status: Status.success,
+            articles: articles,
+          ));
         } catch (e) {
-          emit(NewsErrorState(e.toString()));
+          emit(state.copyWith(
+            status: Status.error,
+            error: e.toString(),
+          ));
         }
       }
     });

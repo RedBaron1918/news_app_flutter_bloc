@@ -112,29 +112,30 @@ class _ListArticlesState extends State<ListArticles> {
             flex: 14,
             child: BlocBuilder<NewsBloc, NewsState>(
               builder: (context, state) {
-                if (state is NewsInitialState) {
+                if (state.status == Status.initial) {
                   context
                       .read<NewsBloc>()
                       .add(GetArticlesEvent(countryName: 'us'));
-                } else if (state is NewsLoadingState) {
+                } else if (state.status == Status.loading) {
                   return Center(
                     child: CircularProgressIndicator(
                       color: green,
                     ),
                   );
-                } else if (state is NewsSuccessState) {
+                } else if (state.status == Status.success) {
                   return RefreshIndicator(
-                      onRefresh: () async {
-                        BlocProvider.of<NewsBloc>(context).add(
-                          GetArticlesEvent(
-                              categoryName: selectedCategory,
-                              countryName: selectedCountryCode),
-                        );
-                      },
-                      child: _BuildArticles(
-                        articles: state.articles,
-                      ));
-                } else if (state is NewsErrorState) {
+                    onRefresh: () async {
+                      BlocProvider.of<NewsBloc>(context).add(
+                        GetArticlesEvent(
+                            categoryName: selectedCategory,
+                            countryName: selectedCountryCode),
+                      );
+                    },
+                    child: _BuildArticles(
+                      articles: state.articles,
+                    ),
+                  );
+                } else if (state.status == Status.error) {
                   return RefreshIndicator(
                     onRefresh: () async {
                       BlocProvider.of<NewsBloc>(context).add(
@@ -144,14 +145,15 @@ class _ListArticlesState extends State<ListArticles> {
                       );
                     },
                     child: Center(
-                        child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.error_outline),
-                        Text(state.error),
-                      ],
-                    )),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.error_outline),
+                          Text(state.error),
+                        ],
+                      ),
+                    ),
                   );
                 }
                 return const Center(child: Text('Something Else Happened!'));
